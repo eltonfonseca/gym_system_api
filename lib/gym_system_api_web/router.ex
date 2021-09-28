@@ -7,6 +7,8 @@ defmodule GymSystemApiWeb.Router do
 
   scope "/api", GymSystemApiWeb do
     pipe_through :api
+
+    resources "/body_builders", BodybuildersController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
