@@ -1,42 +1,21 @@
 defmodule GymSystemApi.Gym do
-  @moduledoc """
-  The Gym context.
-  """
-
   import Ecto.Query, warn: false
+
   alias GymSystemApi.Repo
+  alias GymSystemApi.Gym.Bodybuilder
+  alias GymSystemApi.Gym.Training
 
-  alias GymSystemApi.Gym.Bodybuilders
-
-  @doc """
-  Returns the list of body_builders.
-
-  ## Examples
-
-      iex> list_body_builders()
-      [%Bodybuilders{}, ...]
-
-  """
   def list_body_builders do
-    Repo.all(Bodybuilders)
+    Repo.all(Bodybuilder)
   end
 
-  @doc """
-  Gets a single bodybuilders.
+  def list_trainings do
+    Repo.all(Training)
+  end
 
-  Returns {:error, message} if the Bodybuilders does not exist.
-
-  ## Examples
-
-      iex> get_bodybuilders(123)
-      {:ok, %Bodybuilders{}}
-
-      iex> get_bodybuilders(456)
-      {:error, message}
-
-  """
-  def get_bodybuilders(id) do
-    bodybuilder = Repo.get(Bodybuilders, id)
+  def get_bodybuilder(id) do
+    bodybuilder =
+      Repo.get(Bodybuilder, id)
 
     case bodybuilder do
       nil -> {:error, "No record found"}
@@ -44,68 +23,37 @@ defmodule GymSystemApi.Gym do
     end
   end
 
-  @doc """
-  Creates a bodybuilders.
-
-  ## Examples
-
-      iex> create_bodybuilders(%{field: value})
-      {:ok, %Bodybuilders{}}
-
-      iex> create_bodybuilders(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_bodybuilders(attrs \\ %{}) do
-    %Bodybuilders{}
-    |> Bodybuilders.changeset(attrs)
+  def create_bodybuilder(attrs \\ %{}) do
+    %Bodybuilder{}
+    |> Bodybuilder.changeset(attrs)
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a bodybuilders.
+  def create_training(attrs \\ %{}) do
+    %Training{}
+    |> Training.changeset(attrs)
+    |> Repo.insert()
+  end
 
-  ## Examples
-
-      iex> update_bodybuilders(bodybuilders, %{field: new_value})
-      {:ok, %Bodybuilders{}}
-
-      iex> update_bodybuilders(bodybuilders, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_bodybuilders(%Bodybuilders{} = bodybuilders, attrs) do
-    bodybuilders
-    |> Bodybuilders.changeset(attrs)
+  def update_bodybuilder(%Bodybuilder{} = bodybuilder, attrs) do
+    bodybuilder
+    |> Bodybuilder.changeset(attrs)
     |> Repo.update()
   end
 
-  @doc """
-  Deletes a bodybuilders.
-
-  ## Examples
-
-      iex> delete_bodybuilders(bodybuilders)
-      {:ok, %Bodybuilders{}}
-
-      iex> delete_bodybuilders(bodybuilders)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_bodybuilders(%Bodybuilders{} = bodybuilders) do
-    Repo.delete(bodybuilders)
+  def delete_bodybuilder(%Bodybuilder{} = bodybuilder) do
+    Repo.delete(bodybuilder)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking bodybuilders changes.
+  def change_bodybuilder(%Bodybuilder{} = bodybuilder, attrs \\ %{}) do
+    Bodybuilder.changeset(bodybuilder, attrs)
+  end
 
-  ## Examples
-
-      iex> change_bodybuilders(bodybuilders)
-      %Ecto.Changeset{data: %Bodybuilders{}}
-
-  """
-  def change_bodybuilders(%Bodybuilders{} = bodybuilders, attrs \\ %{}) do
-    Bodybuilders.changeset(bodybuilders, attrs)
+  def list_bodybuilder_tranings(bodybuilder_id) do
+    Repo.all(
+      from(training in Training,
+        where: training.bodybuilder_id == ^bodybuilder_id
+      )
+    )
   end
 end
