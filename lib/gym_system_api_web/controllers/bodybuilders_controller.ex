@@ -2,28 +2,28 @@ defmodule GymSystemApiWeb.BodybuildersController do
   use GymSystemApiWeb, :controller
 
   alias GymSystemApi.Gym
-  alias GymSystemApi.Gym.Bodybuilders
+  alias GymSystemApi.Gym.Bodybuilder
 
   action_fallback GymSystemApiWeb.FallbackController
 
   def index(conn, _params) do
     body_builders = Gym.list_body_builders()
-    render(conn, "index.json", body_builders: body_builders)
+    render(conn, "index.json", bodybuilders: body_builders)
   end
 
-  def create(conn, %{"bodybuilders" => bodybuilders_params}) do
-    with {:ok, %Bodybuilders{} = bodybuilders} <- Gym.create_bodybuilders(bodybuilders_params) do
+  def create(conn, %{"bodybuilder" => bodybuilder_params}) do
+    with {:ok, %Bodybuilder{} = bodybuilder} <- Gym.create_bodybuilder(bodybuilder_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.bodybuilders_path(conn, :show, bodybuilders))
-      |> render("show.json", bodybuilders: bodybuilders)
+      |> put_resp_header("location", Routes.bodybuilders_path(conn, :show, bodybuilder))
+      |> render("show.json", bodybuilder: bodybuilder)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    case Gym.get_bodybuilders(id) do
+    case Gym.get_bodybuilder(id) do
       {:ok, bodybuilder} ->
-        render(conn, "show.json", bodybuilders: bodybuilder)
+        render(conn, "show.json", bodybuilder: bodybuilder)
 
       {:error, message} ->
         conn
@@ -32,11 +32,11 @@ defmodule GymSystemApiWeb.BodybuildersController do
     end
   end
 
-  def update(conn, %{"id" => id, "bodybuilders" => bodybuilders_params}) do
-    case Gym.get_bodybuilders(id) do
+  def update(conn, %{"id" => id, "bodybuilder" => bodybuilder_params}) do
+    case Gym.get_bodybuilder(id) do
       {:ok, bodybuilder} ->
-        Gym.update_bodybuilders(bodybuilder, bodybuilders_params)
-        render(conn, "show.json", bodybuilders: bodybuilder)
+        Gym.update_bodybuilder(bodybuilder, bodybuilder_params)
+        render(conn, "show.json", bodybuilder: bodybuilder)
 
       {:error, message} ->
         conn
@@ -46,9 +46,9 @@ defmodule GymSystemApiWeb.BodybuildersController do
   end
 
   def delete(conn, %{"id" => id}) do
-    case Gym.get_bodybuilders(id) do
+    case Gym.get_bodybuilder(id) do
       {:ok, bodybuilder} ->
-        Gym.delete_bodybuilders(bodybuilder)
+        Gym.delete_bodybuilder(bodybuilder)
         send_resp(conn, :no_content, "")
 
       {:error, message} ->
