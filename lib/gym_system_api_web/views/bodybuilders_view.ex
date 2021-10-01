@@ -1,20 +1,19 @@
 defmodule GymSystemApiWeb.BodybuildersView do
   use GymSystemApiWeb, :view
-  alias GymSystemApiWeb.BodybuildersView
 
-  def render("index.json", %{body_builders: body_builders}) do
-    %{data: render_many(body_builders, BodybuildersView, "bodybuilders.json")}
+  def render("index.json", %{bodybuilders: body_builders}) do
+    %{data: render_many(body_builders, __MODULE__, "bodybuilder.json", as: :bodybuilder)}
   end
 
-  def render("show.json", %{bodybuilders: bodybuilders}) do
-    %{data: render_one(bodybuilders, BodybuildersView, "bodybuilders.json")}
+  def render("show.json", %{bodybuilder: bodybuilder}) do
+    %{data: render_one(bodybuilder, __MODULE__, "bodybuilder.json", as: :bodybuilder)}
   end
 
-  def render("bodybuilders.json", %{bodybuilders: bodybuilders}) do
+  def render("bodybuilder.json", %{bodybuilder: bodybuilder}) do
     %{
-      id: bodybuilders.id,
-      name: bodybuilders.name,
-      cpf: bodybuilders.cpf
+      id: bodybuilder.id,
+      name: bodybuilder.name,
+      cpf: bodybuilder.cpf
     }
   end
 
