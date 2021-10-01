@@ -24,18 +24,25 @@ defmodule GymSystemApi.Gym do
   @doc """
   Gets a single bodybuilders.
 
-  Raises `Ecto.NoResultsError` if the Bodybuilders does not exist.
+  Returns {:error, message} if the Bodybuilders does not exist.
 
   ## Examples
 
-      iex> get_bodybuilders!(123)
-      %Bodybuilders{}
+      iex> get_bodybuilders(123)
+      {:ok, %Bodybuilders{}}
 
-      iex> get_bodybuilders!(456)
-      ** (Ecto.NoResultsError)
+      iex> get_bodybuilders(456)
+      {:error, message}
 
   """
-  def get_bodybuilders!(id), do: Repo.get!(Bodybuilders, id)
+  def get_bodybuilders(id) do
+    bodybuilder = Repo.get(Bodybuilders, id)
+
+    case bodybuilder do
+      nil -> {:error, "No record found"}
+      _ -> {:ok, bodybuilder}
+    end
+  end
 
   @doc """
   Creates a bodybuilders.

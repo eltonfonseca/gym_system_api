@@ -21,23 +21,40 @@ defmodule GymSystemApiWeb.BodybuildersController do
   end
 
   def show(conn, %{"id" => id}) do
-    bodybuilders = Gym.get_bodybuilders!(id)
-    render(conn, "show.json", bodybuilders: bodybuilders)
+    case Gym.get_bodybuilders(id) do
+      {:ok, bodybuilder} ->
+        render(conn, "show.json", bodybuilders: bodybuilder)
+
+      {:error, message} ->
+        conn
+        |> put_status(404)
+        |> render("404.json", message: message)
+    end
   end
 
   def update(conn, %{"id" => id, "bodybuilders" => bodybuilders_params}) do
-    bodybuilders = Gym.get_bodybuilders!(id)
+    case Gym.get_bodybuilders(id) do
+      {:ok, bodybuilder} ->
+        Gym.update_bodybuilders(bodybuilder, bodybuilders_params)
+        render(conn, "show.json", bodybuilders: bodybuilder)
 
-    with {:ok, %Bodybuilders{} = bodybuilders} <- Gym.update_bodybuilders(bodybuilders, bodybuilders_params) do
-      render(conn, "show.json", bodybuilders: bodybuilders)
+      {:error, message} ->
+        conn
+        |> put_status(404)
+        |> render("404.json", message: message)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    bodybuilders = Gym.get_bodybuilders!(id)
+    case Gym.get_bodybuilders(id) do
+      {:ok, bodybuilder} ->
+        Gym.delete_bodybuilders(bodybuilder)
+        send_resp(conn, :no_content, "")
 
-    with {:ok, %Bodybuilders{}} <- Gym.delete_bodybuilders(bodybuilders) do
-      send_resp(conn, :no_content, "")
+      {:error, message} ->
+        conn
+        |> put_status(404)
+        |> render("404.json", message: message)
     end
   end
 end

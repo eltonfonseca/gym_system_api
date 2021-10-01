@@ -17,4 +17,8 @@ defmodule GymSystemApiWeb.BodybuildersView do
       cpf: bodybuilders.cpf
     }
   end
+
+  def render("404.json", %{message: message}) do
+    %{error: message}
+  end
 end
