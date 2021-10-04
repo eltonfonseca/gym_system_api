@@ -62,7 +62,8 @@ defmodule GymSystemApi.Gym do
   def list_bodybuilder_tranings(bodybuilder_id) do
     Repo.all(
       from(training in Training,
-        where: training.bodybuilder_id == ^bodybuilder_id
+        where: training.bodybuilder_id == ^bodybuilder_id,
+        select: training
       )
     )
   end
