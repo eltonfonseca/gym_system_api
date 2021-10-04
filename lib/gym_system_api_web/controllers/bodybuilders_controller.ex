@@ -57,4 +57,9 @@ defmodule GymSystemApiWeb.BodybuildersController do
         |> render("404.json", message: message)
     end
   end
+
+  def list_trainings(conn, %{"bodybuilders_id" => bodybuilders_id}) do
+    trainings = Gym.list_bodybuilder_tranings(bodybuilders_id)
+    render(conn, "tranings_by_bodybuilder.json", trainings: trainings)
+  end
 end
