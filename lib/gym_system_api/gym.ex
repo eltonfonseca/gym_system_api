@@ -13,6 +13,16 @@ defmodule GymSystemApi.Gym do
     Repo.all(Training)
   end
 
+  def get_training(id) do
+    training =
+      Repo.get(Training, id)
+
+    case training do
+      nil -> {:error, "No record found"}
+      _ -> {:ok, training}
+    end
+  end
+
   def get_bodybuilder(id) do
     bodybuilder =
       Repo.get(Bodybuilder, id)
