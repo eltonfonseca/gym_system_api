@@ -8,8 +8,11 @@ defmodule GymSystemApiWeb.Router do
   scope "/api", GymSystemApiWeb do
     pipe_through :api
 
-    resources "/body_builders", BodybuildersController, except: [:new, :edit]
-    resources "/trainings", TrainingsController, only: [:create, :index]
+    resources("/body_builders", BodybuildersController, except: [:new, :edit]) do
+      get("/trainings", BodybuildersController, :list_trainings)
+    end
+
+    resources "/trainings", TrainingsController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
