@@ -17,6 +17,6 @@ defmodule GymSystemApi.Gym.Training do
   def changeset(trainings, attrs) do
     trainings
     |> cast(attrs, [:description, :exercises, :bodybuilder_id])
-    |> validate_required([:description])
+    |> validate_required([:description, :bodybuilder_id])
   end
 end
