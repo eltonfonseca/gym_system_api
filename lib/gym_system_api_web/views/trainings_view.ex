@@ -6,6 +6,10 @@ defmodule GymSystemApiWeb.TrainingsView do
     %{data: render_many(trainings, TrainingsView, "training.json", as: :training)}
   end
 
+  def render("show.json", %{training: training}) do
+    %{data: render_one(training, TrainingsView, "training.json", as: :training)}
+  end
+
   def render("training.json", %{training: training}) do
     %{
       id: training.id,
